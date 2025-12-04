@@ -1,7 +1,7 @@
 package com.matchoddsmanager.match_odds_manager.controller;
 
 import com.matchoddsmanager.match_odds_manager.entities.User;
-import com.matchoddsmanager.match_odds_manager.repositorie.UserRepository;
+import com.matchoddsmanager.match_odds_manager.repository.UserRepository;
 import com.matchoddsmanager.match_odds_manager.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
