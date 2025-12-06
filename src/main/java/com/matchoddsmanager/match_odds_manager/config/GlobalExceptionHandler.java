@@ -1,5 +1,6 @@
 package com.matchoddsmanager.match_odds_manager.config;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.matchoddsmanager.match_odds_manager.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleJsonParseException(HttpMessageNotReadableException ex) {
 
         Throwable cause = ex.getCause();
-        Map<String, String> errors = null;
+        Map<String, String> errors = new HashMap<>();
 
         if (cause instanceof InvalidFormatException invalidFormatException) {
             String fieldName = invalidFormatException.getPath().getFirst().getFieldName();
@@ -30,6 +32,8 @@ public class GlobalExceptionHandler {
             errors = Map.of(
                     fieldName, "Invalid value: '" + wrongValue + "'"
             );
+        } else {
+            errors.put("error", "Malformed JSON request");
         }
 
         ApiResponse<Object> response = ApiResponse.builder()
@@ -44,11 +48,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        Map<String, String> errors = Map.of(
+                "details", ex.getMessage()
+        );
         ApiResponse<Object> response = ApiResponse.builder()
                 .status("ERROR")
-                .message(ex.getMessage())
+                .message("Invalid Argument")
                 .data(null)
-                .errors(null)
+                .errors(errors)
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -78,12 +85,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleAllOtherExceptions(Exception ex) {
+        Map<String, String> errors = Map.of(
+                "details", ex.getMessage()
+        );
 
         ApiResponse<Object> response = ApiResponse.builder()
                 .status("ERROR")
-                .message(ex.getMessage() != null ? ex.getMessage() : "Unexpected error occurred")
+                .message("Unexpected error occurred")
                 .data(null)
-                .errors(null)
+                .errors(errors)
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
