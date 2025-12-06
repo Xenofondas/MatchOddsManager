@@ -34,9 +34,9 @@ public class MatchController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Match>>> getAllMatches() {
-        List<Match> matches = matchService.getAllMatches();
-        ApiResponse<List<Match>> apiResponse = ApiResponse.<List<Match>>builder()
+    public ResponseEntity<ApiResponse<List<MatchResponse>>> getAllMatches() {
+        List<MatchResponse> matches = matchService.getAllMatches();
+        ApiResponse<List<MatchResponse>> apiResponse = ApiResponse.<List<MatchResponse>>builder()
                 .status("SUCCESS")
                 .message("Matches retrieved successfully")
                 .data(matches)
@@ -46,10 +46,10 @@ public class MatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Match>> getMatchById(@PathVariable Long id) {
-        Match match = matchService.getMatchById(id);
+    public ResponseEntity<ApiResponse<MatchResponse>> getMatchById(@PathVariable Long id) {
+        MatchResponse match = matchService.getMatchById(id);
 
-        ApiResponse<Match> apiResponse = ApiResponse.<Match>builder()
+        ApiResponse<MatchResponse> apiResponse = ApiResponse.<MatchResponse>builder()
                 .status("SUCCESS")
                 .message("Match retrieved successfully")
                 .data(match)
@@ -58,10 +58,10 @@ public class MatchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Match>> updateMatch(@PathVariable Long id, @RequestBody Match updatedMatch) {
-        Match match = matchService.updateMatch(id, updatedMatch);
+    public ResponseEntity<ApiResponse<MatchResponse>> updateMatch(@PathVariable Long id, @RequestBody MatchRequest updatedMatch) {
+        MatchResponse match = matchService.updateMatch(id, updatedMatch);
 
-        ApiResponse<Match> apiResponse = ApiResponse.<Match>builder()
+        ApiResponse<MatchResponse> apiResponse = ApiResponse.<MatchResponse>builder()
                 .status("SUCCESS")
                 .message("Match updated successfully")
                 .data(match)

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface MatchService {
     MatchResponse createMatch(MatchRequest matchRequest);
-    List<Match> getAllMatches();
-    Match getMatchById(Long id);
-    Match updateMatch(Long id, Match updatedMatch);
+    List<MatchResponse> getAllMatches();
+    MatchResponse getMatchById(Long id);
+    MatchResponse updateMatch(Long id, MatchRequest updatedMatch);
     void deleteMatch(Long id);
 }

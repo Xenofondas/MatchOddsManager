@@ -1,5 +1,6 @@
 package com.matchoddsmanager.match_odds_manager.dto;
 
+import com.matchoddsmanager.match_odds_manager.entities.Specifier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MatchOddResponse {
     private Long matchOddId;
-    private String specifier;
+    private Specifier specifier;
     private Double odd;
 }

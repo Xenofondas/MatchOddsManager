@@ -37,7 +37,6 @@ public class Match {
     @Column(name = "team_b")
     private String teamB;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "sport")
     private Sport sport;
 

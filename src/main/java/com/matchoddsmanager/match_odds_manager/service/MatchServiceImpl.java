@@ -12,9 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -23,7 +22,6 @@ public class MatchServiceImpl implements MatchService {
     private MatchRepository matchRepository;
 
     @Override
-    @Transactional
     public MatchResponse createMatch(MatchRequest matchRequest) {
         Match match = new Match();
         match.setDescription(matchRequest.getDescription());
@@ -34,14 +32,15 @@ public class MatchServiceImpl implements MatchService {
         match.setSport(Sport.valueOf(matchRequest.getSport()));
 
         if (matchRequest.getMatchOdds() != null && !matchRequest.getMatchOdds().isEmpty()) {
-            matchRequest.getMatchOdds().forEach(md -> {
-                MatchOdd matchOdd = new MatchOdd();
-                matchOdd.setMatch(match);
-                matchOdd.setSpecifier(md.getSpecifier());
-                matchOdd.setOdd(md.getOdd());
+            matchRequest.getMatchOdds().stream()
+                    .map(mo -> {
+                        MatchOdd matchOdd = new MatchOdd();
+                        matchOdd.setMatch(match);
+                        matchOdd.setSpecifier(mo.getSpecifier());
+                        matchOdd.setOdd(mo.getOdd());
 
-                match.getOdds().add(matchOdd);
-            });
+                        return matchOdd;
+                    }).forEach(mo -> match.getOdds().add(mo));
         }
 
         return getMatchResponse(matchRepository.save(match));
@@ -64,6 +63,7 @@ public class MatchServiceImpl implements MatchService {
                             r.setMatchOddId(o.getMatchOddId());
                             r.setSpecifier(o.getSpecifier());
                             r.setOdd(o.getOdd());
+
                             return r;
                         })
                         .toList()
@@ -73,28 +73,59 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> getAllMatches() {
-        return matchRepository.findAll();
+    public List<MatchResponse> getAllMatches() {
+        List<Match> savedMatches = matchRepository.findAll();
+
+        return savedMatches.stream()
+                .map(m -> getMatchResponse(m))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Match getMatchById(Long id) {
-        return matchRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Match not found with id " + id));
+    public MatchResponse getMatchById(Long matchId) {
+        Optional<Match> match = matchRepository.findByMatchId(matchId);
+        if (match.isEmpty()) {
+            throw new RuntimeException("Match not found with id " + matchId);
+        }
+
+        return getMatchResponse(match.get());
     }
 
     @Override
-    public Match updateMatch(Long id, Match updatedMatch) {
-        Match match = getMatchById(id);
+    public MatchResponse updateMatch(Long matchId, MatchRequest updatedMatch) {
+        Optional<Match> match = matchRepository.findByMatchId(matchId);
+        if (match.isEmpty()) {
+            throw new RuntimeException("Match not found with id " + matchId);
+        } else {
+            Match savedMatch = match.get();
+            savedMatch.setDescription(updatedMatch.getDescription());
+            savedMatch.setMatchDate(updatedMatch.getMatchDate());
+            savedMatch.setMatchTime(updatedMatch.getMatchTime());
+            savedMatch.setTeamA(updatedMatch.getTeamA());
+            savedMatch.setTeamB(updatedMatch.getTeamB());
+            savedMatch.setSport(Sport.valueOf(updatedMatch.getSport()));
 
-        match.setDescription(updatedMatch.getDescription());
-        match.setMatchDate(updatedMatch.getMatchDate());
-        match.setMatchTime(updatedMatch.getMatchTime());
-        match.setTeamA(updatedMatch.getTeamA());
-        match.setTeamB(updatedMatch.getTeamB());
-        match.setSport(updatedMatch.getSport());
+            if (updatedMatch.getMatchOdds() != null && !updatedMatch.getMatchOdds().isEmpty()) {
+                updatedMatch.getMatchOdds().forEach(o -> {
+                    MatchOdd savedOdd = savedMatch.getOdds().stream()
+                            .filter(odd -> odd.getSpecifier().equals(o.getSpecifier()))
+                            .findFirst()
+                            .orElse(null);
+                    if (savedOdd != null) {
+                        savedOdd.setOdd(o.getOdd());
+                    } else {
+                        MatchOdd matchOdd = new MatchOdd();
+                        matchOdd.setMatch(savedMatch);
+                        matchOdd.setSpecifier(o.getSpecifier());
+                        matchOdd.setOdd(o.getOdd());
 
-        return matchRepository.save(match);
+                        savedMatch.getOdds().add(matchOdd);
+                    }
+                });
+            }
+
+            return getMatchResponse(matchRepository.save(savedMatch));
+        }
     }
 
     @Override

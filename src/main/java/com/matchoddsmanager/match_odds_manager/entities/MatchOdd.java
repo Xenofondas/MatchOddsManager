@@ -19,8 +19,8 @@ public class MatchOdd {
     @JoinColumn(name = "match_id", nullable = false)
     private Match match;
 
-    @Column(name = "description")
-    private String specifier;
+    @Column(name = "specifier")
+    private Specifier specifier;
 
     @Column(name = "odd")
     private Double odd;
