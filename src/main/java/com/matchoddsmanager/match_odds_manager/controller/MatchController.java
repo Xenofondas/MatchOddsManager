@@ -2,6 +2,7 @@ package com.matchoddsmanager.match_odds_manager.controller;
 
 import com.matchoddsmanager.match_odds_manager.dto.*;
 import com.matchoddsmanager.match_odds_manager.service.MatchService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class MatchController {
     private MatchService matchService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MatchResponse>> createMatch(@RequestBody MatchRequest matchRequest) {
+    public ResponseEntity<ApiResponse<MatchResponse>> createMatch(@Valid @RequestBody MatchRequest matchRequest) {
         MatchResponse savedMatch = matchService.createMatch(matchRequest);
         ApiResponse<MatchResponse> apiResponse = ApiResponse.<MatchResponse>builder()
                 .status("SUCCESS")
@@ -53,7 +54,7 @@ public class MatchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<MatchResponse>> updateMatch(@PathVariable Long id, @RequestBody MatchRequest updatedMatch) {
+    public ResponseEntity<ApiResponse<MatchResponse>> updateMatch(@PathVariable Long id, @Valid @RequestBody MatchRequest updatedMatch) {
         MatchResponse match = matchService.updateMatch(id, updatedMatch);
 
         ApiResponse<MatchResponse> apiResponse = ApiResponse.<MatchResponse>builder()
@@ -66,7 +67,7 @@ public class MatchController {
     }
 
     @PutMapping("/matchOdd/{id}")
-    public ResponseEntity<ApiResponse<MatchOddResponse>> updateMatchOdd(@PathVariable Long id, @RequestBody MatchOddRequest matchOddRequest) {
+    public ResponseEntity<ApiResponse<MatchOddResponse>> updateMatchOdd(@PathVariable Long id, @Valid @RequestBody MatchOddRequest matchOddRequest) {
         MatchOddResponse matchOddResponse = matchService.updateMatchOdd(id, matchOddRequest);
 
         ApiResponse<MatchOddResponse> apiResponse = ApiResponse.<MatchOddResponse>builder()
@@ -79,7 +80,7 @@ public class MatchController {
     }
 
     @PutMapping("/{matchId}/odds")
-    public ResponseEntity<ApiResponse<MatchResponse>> updateMatchOddΒySpecifier(@PathVariable Long matchId, @RequestBody MatchOddUpdateRequest matchOddUpdateRequest) {
+    public ResponseEntity<ApiResponse<MatchResponse>> updateMatchOddΒySpecifier(@PathVariable Long matchId, @Valid @RequestBody MatchOddUpdateRequest matchOddUpdateRequest) {
         MatchResponse matchResponse = matchService.updateMatchOddBySpecifier(matchId, matchOddUpdateRequest);
 
         ApiResponse<MatchResponse> apiResponse = ApiResponse.<MatchResponse>builder()

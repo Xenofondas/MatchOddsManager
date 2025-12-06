@@ -29,7 +29,7 @@ public class MatchServiceImpl implements MatchService {
         match.setMatchTime(matchRequest.getMatchTime());
         match.setTeamA(matchRequest.getTeamA());
         match.setTeamB(matchRequest.getTeamB());
-        match.setSport(Sport.valueOf(matchRequest.getSport()));
+        match.setSport(matchRequest.getSport());
 
         if (matchRequest.getMatchOdds() != null && !matchRequest.getMatchOdds().isEmpty()) {
             matchRequest.getMatchOdds().stream()
@@ -103,7 +103,7 @@ public class MatchServiceImpl implements MatchService {
             savedMatch.setMatchTime(updatedMatch.getMatchTime());
             savedMatch.setTeamA(updatedMatch.getTeamA());
             savedMatch.setTeamB(updatedMatch.getTeamB());
-            savedMatch.setSport(Sport.valueOf(updatedMatch.getSport()));
+            savedMatch.setSport(updatedMatch.getSport());
 
             if (updatedMatch.getMatchOdds() != null && !updatedMatch.getMatchOdds().isEmpty()) {
                 updatedMatch.getMatchOdds().forEach(o -> {

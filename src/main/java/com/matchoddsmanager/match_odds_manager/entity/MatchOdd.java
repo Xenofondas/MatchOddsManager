@@ -1,6 +1,7 @@
 package com.matchoddsmanager.match_odds_manager.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,9 +20,13 @@ public class MatchOdd {
     @JoinColumn(name = "match_id", nullable = false)
     private Match match;
 
+    @NotNull(message = "Specifier (1, X, 2) is required")
     @Column(name = "specifier")
     private Specifier specifier;
 
+    @NotNull(message = "Odd value is required")
+    @DecimalMin(value = "1.01", message = "Odd must be grater than 1.01")
+    @DecimalMax(value = "1000.00", message = "Odd must be lower than 1000.00")
     @Column(name = "odd")
     private Double odd;
 
