@@ -1,7 +1,6 @@
-package com.matchoddsmanager.match_odds_manager.entities;
+package com.matchoddsmanager.match_odds_manager.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

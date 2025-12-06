@@ -1,4 +1,4 @@
-package com.matchoddsmanager.match_odds_manager.entities;
+package com.matchoddsmanager.match_odds_manager.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

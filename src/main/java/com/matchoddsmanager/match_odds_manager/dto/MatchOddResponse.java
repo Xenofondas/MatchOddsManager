@@ -1,6 +1,6 @@
 package com.matchoddsmanager.match_odds_manager.dto;
 
-import com.matchoddsmanager.match_odds_manager.entities.Specifier;
+import com.matchoddsmanager.match_odds_manager.entity.Specifier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

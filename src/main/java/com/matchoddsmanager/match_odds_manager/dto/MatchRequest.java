@@ -1,12 +1,10 @@
 package com.matchoddsmanager.match_odds_manager.dto;
 
-import com.matchoddsmanager.match_odds_manager.entities.MatchOdd;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;

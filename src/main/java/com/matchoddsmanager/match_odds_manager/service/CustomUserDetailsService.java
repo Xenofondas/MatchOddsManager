@@ -1,6 +1,6 @@
 package com.matchoddsmanager.match_odds_manager.service;
 
-import com.matchoddsmanager.match_odds_manager.entities.User;
+import com.matchoddsmanager.match_odds_manager.entity.User;
 import com.matchoddsmanager.match_odds_manager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;

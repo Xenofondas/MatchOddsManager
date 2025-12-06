@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchOddRequest {
+public class MatchOddUpdateRequest {
     private Specifier specifier;
     private Double odd;
 }

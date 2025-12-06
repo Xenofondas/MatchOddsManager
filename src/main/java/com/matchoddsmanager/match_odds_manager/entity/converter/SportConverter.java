@@ -1,6 +1,6 @@
-package com.matchoddsmanager.match_odds_manager.entities.converter;
+package com.matchoddsmanager.match_odds_manager.entity.converter;
 
-import com.matchoddsmanager.match_odds_manager.entities.Sport;
+import com.matchoddsmanager.match_odds_manager.entity.Sport;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
