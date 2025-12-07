@@ -22,7 +22,6 @@ import java.util.Set;
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     @Column(name = "match_id")
     private Long matchId;
 
@@ -56,5 +55,25 @@ public class Match {
 
     public Match(Long matchId) {
         this.matchId = matchId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Match)) {
+            return false;
+        }
+
+        Match other = (Match) o;
+
+        return this.matchId != null && matchId.equals(other.getMatchId());
+    }
+
+    @Override
+    public int hashCode() {
+        return matchId != null ? matchId.hashCode() : getClass().hashCode();
     }
 }

@@ -14,7 +14,6 @@ import lombok.Setter;
 public class MatchOdd {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     @Column(name = "match_odd_id")
     private Long matchOddId;
 
@@ -35,4 +34,25 @@ public class MatchOdd {
     public MatchOdd(Long matchOddId) {
         this.matchOddId = matchOddId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        
+        if (!(o instanceof MatchOdd)) {
+            return false;
+        }
+
+        MatchOdd other = (MatchOdd) o;
+
+        return matchOddId != null && matchOddId.equals(other.getMatchOddId());
+    }
+
+    @Override
+    public int hashCode() {
+        return matchOddId != null ? matchOddId.hashCode() : getClass().hashCode();
+    }
+
 }
