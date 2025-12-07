@@ -33,7 +33,7 @@ public class MatchRequest {
     @NotBlank(message = "Team B is required")
     private String teamB;
 
-    @NotNull(message = "Sport is required")
+    @NotNull(message = "Sport (FOOTBALL or BASKETBALL) is required.")
     @Schema(
             type = "integer",
             allowableValues = {"FOOTBALL", "BASKETBALL"},
